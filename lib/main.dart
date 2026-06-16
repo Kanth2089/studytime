@@ -1,0 +1,113 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+// Core imports
+import 'core/constants/firebase_config.dart';
+import 'core/theme/app_theme.dart';
+import 'core/localization/language_provider.dart';
+
+// Presentation Providers
+import 'features/auth/presentation/providers/auth_provider.dart';
+import 'features/timetable/presentation/providers/timetable_provider.dart';
+import 'features/books/presentation/providers/books_provider.dart';
+import 'features/exams/presentation/providers/exams_provider.dart';
+
+// Screens
+import 'features/auth/presentation/screens/login_screen.dart';
+import 'features/auth/presentation/screens/email_verification_screen.dart';
+import 'features/dashboard/presentation/screens/dashboard_screen.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Try to initialize Firebase
+  try {
+    await Firebase.initializeApp();
+    FirebaseConfig.isFirebaseAvailable = true;
+    print("Firebase initialized successfully.");
+  } catch (e) {
+    FirebaseConfig.isFirebaseAvailable = false;
+    print("Firebase configuration not found or failed to initialize. Running in Local Mock Mode: $e");
+  }
+
+  runApp(const StudyTimetableApp());
+}
+
+class StudyTimetableApp extends StatelessWidget {
+  const StudyTimetableApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LanguageProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => TimetableProvider()),
+        ChangeNotifierProvider(create: (_) => BooksProvider()),
+        ChangeNotifierProvider(create: (_) => ExamsProvider()),
+      ],
+      child: Consumer2<LanguageProvider, AuthProvider>(
+        builder: (context, langProvider, authProvider, child) {
+          // Show splash/loading screen while checking auth state
+          Widget homeScreen;
+          if (authProvider.isLoading) {
+            homeScreen = const _SplashScreen();
+          } else if (authProvider.isAuthenticated) {
+            if (authProvider.isEmailVerified) {
+              homeScreen = const DashboardScreen();
+            } else {
+              homeScreen = const EmailVerificationScreen();
+            }
+          } else {
+            homeScreen = const LoginScreen();
+          }
+
+          return MaterialApp(
+            title: 'Study Timetable',
+            theme: AppTheme.darkTheme,
+            debugShowCheckedModeBanner: false,
+            locale: langProvider.locale,
+            home: homeScreen,
+            routes: {
+              '/login': (_) => const LoginScreen(),
+              '/dashboard': (_) => const DashboardScreen(),
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _SplashScreen extends StatelessWidget {
+  const _SplashScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF050B14), Color(0xFF0F2038), Color(0xFF071224)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.menu_book_rounded, size: 72, color: Color(0xFF00D2FF)),
+              SizedBox(height: 24),
+              CircularProgressIndicator(
+                color: Color(0xFF00D2FF),
+                strokeWidth: 2.5,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
