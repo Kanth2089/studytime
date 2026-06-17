@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/constants/firebase_config.dart';
 import '../domain/question_model.dart';
 import '../domain/result_model.dart';
-import '../../auth/domain/user_model.dart';
 
 class ExamsService {
   FirebaseFirestore get _firestore => FirebaseFirestore.instance;

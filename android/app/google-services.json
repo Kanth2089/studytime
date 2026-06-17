@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "591794894427",
+    "project_id": "studytime-ada0d",
+    "storage_bucket": "studytime-ada0d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591794894427:android:b104ebafdf65d1ad9c317e",
+        "android_client_info": {
+          "package_name": "com.example.studytime"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUadDPCGkvCiYv1m_d7yODLc8MqLaIghc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

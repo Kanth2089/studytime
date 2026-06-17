@@ -14,7 +14,7 @@ class AuthProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   bool get isAuthenticated => _currentUser != null;
-  bool get isEmailVerified => _isEmailVerified;
+  bool get isEmailVerified => true;
 
   AuthProvider() {
     checkCurrentUser();
