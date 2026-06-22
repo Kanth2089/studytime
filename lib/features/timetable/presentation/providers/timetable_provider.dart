@@ -9,8 +9,8 @@ class TimetableProvider extends ChangeNotifier {
   bool _isLoading = false;
   String? _errorMessage;
 
-  DateTime? _startDate;
-  DateTime? _endDate;
+  DateTime? _startDate = DateTime.now();
+  DateTime? _endDate = DateTime.now().add(const Duration(days: 30));
   String _selectedExamCategory = 'Police SI';
 
   TimetableModel? get activeTimetable => _activeTimetable;
