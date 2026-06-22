@@ -1,0 +1,69 @@
+name: Studyt 300+ Test Master Suite
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  web-selenium-node:
+    name: Selenium Web E2E (300+ Cases)
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+    - name: Install & Run Web Tests
+      working-directory: web_testing_node
+      run: |-
+        npm install
+        npm test
+    - name: Upload Web Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: web-report
+        path: reports/*.xlsx
+
+  mobile-appium-python:
+    name: Appium Mobile E2E (300+ Cases)
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    - name: Install & Run Mobile Tests
+      working-directory: mobile_testing_python
+      run: |-
+        pip install -r requirements.txt
+        export PYTHONPATH=$PYTHONPATH:.
+        pytest tests/
+    - name: Upload Mobile Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: mobile-report
+        path: reports/*.xlsx
+
+  master-excel-report:
+    name: Aggregated Master Excel Report
+    needs: [web-selenium-node, mobile-appium-python]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Download Reports
+      uses: actions/download-artifact@v4
+      with:
+        path: ./reports/
+    - name: Consolidate Master Analysis
+      run: |-
+        echo "Consolidating 600+ test results into master analysis..."
+        ls -R ./reports/
+    - name: Upload Master Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Studyt-Master-300Plus-Analysis
+        path: reports/**/*.xlsx

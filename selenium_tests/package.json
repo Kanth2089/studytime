@@ -1,0 +1,13 @@
+{
+  "name": "smart-blood-selenium",
+  "version": "1.0.0",
+  "main": "specs/web_e2e.test.js",
+  "scripts": {
+    "test": "mocha specs/*.test.js"
+  },
+  "dependencies": {
+    "selenium-webdriver": "^4.0.0",
+    "mocha": "^10.0.0",
+    "assert": "^2.0.0"
+  }
+}

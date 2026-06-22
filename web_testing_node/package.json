@@ -1,0 +1,13 @@
+{
+  "name": "smart-blood-web-suite",
+  "version": "2.0.0",
+  "scripts": {
+    "test": "mocha specs/*.test.js"
+  },
+  "dependencies": {
+    "selenium-webdriver": "^4.21.0",
+    "mocha": "^10.4.0",
+    "exceljs": "^4.4.0",
+    "chai": "^4.4.1"
+  }
+}

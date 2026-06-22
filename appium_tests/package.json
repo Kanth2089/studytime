@@ -1,0 +1,14 @@
+{
+  "name": "smart-blood-appium",
+  "version": "1.0.0",
+  "main": "specs/mobile_e2e.test.js",
+  "scripts": {
+    "test": "mocha specs/*.test.js"
+  },
+  "dependencies": {
+    "webdriverio": "^8.0.0",
+    "@wdio/appium-service": "^8.0.0",
+    "mocha": "^10.0.0",
+    "assert": "^2.0.0"
+  }
+}
